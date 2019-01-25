@@ -1,9 +1,9 @@
 import React from 'react'
+import Card from './Card'
 
 class Column extends React.Component {
-
-handleLeftClick = id => {console.log(id);}
-handleRightClick = id => {console.log(id);}
+//state = {name: 'its column'}
+handleClick = id => {console.log(id);}
 
     render() {
         return(
@@ -11,9 +11,9 @@ handleRightClick = id => {console.log(id);}
                 <div>{console.log(this.props.people)}</div>
                     {this.props.people.map(el => (
                         <div key={el}>
-                            <p>{el}</p>
-                            <button onClick={() => this.handleLeftClick(el)}>Move to</button>
-                            <button onClick={() => this.handleRightClick(el)}>Move to</button>
+                            <Card id={el} />
+
+                            <button onClick={() => this.handleClick(el)}>Move to</button>
                         </div>
                     ))}
             </div>

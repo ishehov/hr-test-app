@@ -1,5 +1,5 @@
 import React from 'react'
-import FetchArray from './FetchArray'
+import fetchArray from '../api/fetchArray'
 import Column from './Column'
 
 
@@ -8,16 +8,19 @@ class Row extends React.Component {
         people: null,
         toDo: [],
         inProgress: [],
-        done: []
+        done: [],
+        id: null
     }
 
     componentDidMount() {
-        FetchArray()
+        fetchArray()
         .then(people => ({ people, toDo: people.map(el => el.id.value)}))
         .then(state => this.setState(state))
     }
 
-
+    // updateData = (value) => {
+    //         this.setState( { id:value } )
+    //     }
 
     render(){
 
@@ -27,12 +30,18 @@ class Row extends React.Component {
                 );
         }
 
-        //Move id to id array of rowNum
-        function moveToRow(rowFrom, rowTo, element) {
+        // function move(from, to, id) {
+        //     if  (this.state[from].includes(id)) {
+        //         this.setState[from] = this
+        //     }
+        // }
 
-            let temp = rowFrom.splice(element, 1)
-            rowTo.push(temp[0])
-        }
+        //Move id to id array of rowNum
+        // function moveToRow(rowFrom, rowTo, element) {
+
+        //     let temp = rowFrom.splice(element, 1)
+        //     rowTo.push(temp[0])
+        // }
 
         // moveToRow(row1, row2, 2)
         // moveToRow(row2, row3, 0)
