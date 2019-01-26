@@ -1,70 +1,56 @@
-import React from 'react'
-import fetchArray from '../api/fetchArray'
+import React, { Component } from 'react'
+import { fetchPeople } from '../api'
+import { COLUMNS } from '../constants';
 import Column from './Column'
 
 
-class Row extends React.Component {
+class Row extends Component {
     state = {
         people: null,
-        toDo: [],
-        inProgress: [],
-        done: [],
-        id: null
+        ...Object.assign({}, ...COLUMNS.map(el => ({ [el]: [] })))
     }
 
     componentDidMount() {
-        fetchArray()
-        .then(people => ({ people, toDo: people.map(el => el.id.value)}))
-        .then(state => this.setState(state))
+        fetchPeople()
+            .then(people => ({
+                people,
+                [COLUMNS[0]]: people.map(el => el.id.value)
+            }))
+            .then(state => this.setState(state))
     }
 
-    // updateData = (value) => {
-    //         this.setState( { id:value } )
-    //     }
+    updateData = (id, from, to) => {
+        if  (this.state[from].includes(id)) {
 
-    render(){
+            this.setState({
+                [from]: this.state[from].filter(el => (id !== el)),
+                [to]: this.state[to].concat(id)
+            })
+        }
+    }
 
+    render() {
         if (!this.state.people) {
             return (
                 <h1>Waiting for data</h1>
-                );
+            );
         }
-
-        // function move(from, to, id) {
-        //     if  (this.state[from].includes(id)) {
-        //         this.setState[from] = this
-        //     }
-        // }
-
-        //Move id to id array of rowNum
-        // function moveToRow(rowFrom, rowTo, element) {
-
-        //     let temp = rowFrom.splice(element, 1)
-        //     rowTo.push(temp[0])
-        // }
-
-        // moveToRow(row1, row2, 2)
-        // moveToRow(row2, row3, 0)
-        // moveToRow(row1, row2, 1)
 
         return (
             <div className="row">
-                <div className="column">
-                    <p>APPLIED</p>
-                    <Column people={this.state.toDo} />
-                </div>
-
-                <div className="column">
-                    <p>INTERVIEWING</p>
-                    <Column people={this.state.inProgress} />
-                </div>
-
-                <div className="column">
-                    <p>HIRED</p>
-                    <Column people={this.state.done} />
-                </div>
+                {COLUMNS.map((colKey, columnNumber) => (
+                    <div className="column" key={colKey}>
+                        <Column
+                            name={colKey}
+                            people={this.state.people}
+                            columnArray={this.state[colKey]}
+                            handleClick={this.updateData}
+                            columnNumber={columnNumber}
+                        />
+                    </div>
+                ))}
             </div>
-            )
+        );
     }
 
 

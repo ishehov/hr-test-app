@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Card from './Card'
+import { COLUMNS } from '../constants'
 
-class Column extends React.Component {
-//state = {name: 'its column'}
-handleClick = id => {console.log(id);}
+class Column extends Component {
+    handleClick = id => {
+        const { handleClick } = this.props;
+        handleClick(id, COLUMNS[0], COLUMNS[1]);
+    }
 
     render() {
+        console.log(this.props)
+
         return(
             <div>
-                <div>{console.log(this.props.people)}</div>
-                    {this.props.people.map(el => (
-                        <div key={el}>
-                            <Card id={el} />
+                <h2>{this.props.name}</h2>
+                {/* <div>{(() => console.log(this.props.people))}</div> */}
+                {this.props.columnArray.map(id => (
+                    <div key={id}>
+                        <Card id={id} />
 
-                            <button onClick={() => this.handleClick(el)}>Move to</button>
-                        </div>
-                    ))}
+                        <button onClick={() => this.handleClick(id)}>Move to Left</button>
+
+                        <button onClick={() => this.handleClick(id)}>Move to Right</button>
+                    </div>
+                ))}
             </div>
         )
     }
