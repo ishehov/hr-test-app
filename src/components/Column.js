@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import Card from './Card'
-import { COLUMNS } from '../constants'
+import React, { Component } from 'react';
+import Card from './Card';
+import { COLUMNS } from '../constants';
 
 class Column extends Component {
     handleClick = (id, direction) => {
@@ -9,14 +9,13 @@ class Column extends Component {
         handleClick(
             id,
             COLUMNS[columnNumber],
-            COLUMNS[('left' === direction) ? columnNumber - 1 : columnNumber + 1]
+            COLUMNS[(direction === 'left') ? columnNumber - 1 : columnNumber + 1],
         );
     }
 
 
-
     render() {
-        return(
+        return (
             <div>
                 <h2>{this.props.name}</h2>
                 {this.props.columnArray.map(id => (
@@ -29,8 +28,8 @@ class Column extends Component {
                     />
                 ))}
             </div>
-        )
+        );
     }
 }
 
-export default Column
+export default Column;

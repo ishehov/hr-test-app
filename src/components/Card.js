@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { COLUMNS } from '../constants'
+import React, { Component } from 'react';
+import { COLUMNS } from '../constants';
 
 class Card extends Component {
     state = {
-        person: null
+        person: null,
     }
 
     componentDidMount() {
-        const person = this.props.people.find(el => el.id.value === this.props.id)
+        const person = this.props.people.find(el => el.id.value === this.props.id);
 
-        this.setState({ person })
+        this.setState({ person });
     }
 
     render() {
@@ -19,27 +19,36 @@ class Card extends Component {
             );
         }
 
-        const { name, picture, cell, email, location } = this.state.person;
+        const {
+            name, picture, cell, email, location,
+        } = this.state.person;
 
-        return(
+        return (
             <div>
                 <div><img src={picture.thumbnail} alt="" /></div>
-                <h3>{name.first} {name.last}</h3>
+                <h3>
+                    {name.first}
+                    {' '}
+                    {name.last}
+                </h3>
                 <p>
-                    {location.city}<br />
-                    <a href={`mailto:${email}`}>Email</a> <a href={`tel:${cell}`}>Phone</a>
+                    {location.city}
+                    <br />
+                    <a href={`mailto:${email}`}>Email</a>
+                    {' '}
+                    <a href={`tel:${cell}`}>Phone</a>
                 </p>
 
                 {(this.props.columnNumber !== 0) && (
-                    <button onClick={() => this.props.handleClick(this.props.id, 'left')}>Move to Left</button>
+                    <button type="button" onClick={() => this.props.handleClick(this.props.id, 'left')}>Move to Left</button>
                 )}
 
                 {(this.props.columnNumber !== COLUMNS.length - 1) && (
-                    <button onClick={() => this.props.handleClick(this.props.id, 'right')}>Move to Right</button>
+                    <button type="button" onClick={() => this.props.handleClick(this.props.id, 'right')}>Move to Right</button>
                 )}
             </div>
-        )
+        );
     }
 }
 
-export default Card
+export default Card;

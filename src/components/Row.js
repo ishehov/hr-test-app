@@ -1,53 +1,51 @@
-import React, { Component } from 'react'
-import { fetchPeople } from '../api'
+import React, { Component } from 'react';
+import { fetchPeople } from '../api';
 import { COLUMNS } from '../constants';
 import Filters from './Filters';
-import Column from './Column'
+import Column from './Column';
 
 
 class Row extends Component {
     state = {
         people: null,
         filterValue: '',
-        ...Object.assign({}, ...COLUMNS.map(el => ({ [el]: [] })))
+        ...Object.assign({}, ...COLUMNS.map(el => ({ [el]: [] }))),
     }
 
     componentDidMount() {
         fetchPeople()
             .then(people => ({
                 people,
-                [COLUMNS[0]]: people.map(el => el.id.value)
+                [COLUMNS[0]]: people.map(el => el.id.value),
             }))
-            .then(state => this.setState(state))
+            .then(state => this.setState(state));
     }
 
     movePersonId = (id, from, to) => {
-        if  (this.state[from].includes(id)) {
-
-            this.setState({
-                [from]: this.state[from].filter(el => (id !== el)),
-                [to]: this.state[to].concat(id)
-            })
+        if (this.state[from].includes(id)) {
+            this.setState(prevState => ({
+                [from]: prevState[from].filter(el => (id !== el)),
+                [to]: prevState[to].concat(id),
+            }));
         }
     }
 
     handleFilterChange = filterValue => {
-        this.setState({ filterValue })
+        this.setState({ filterValue });
     }
 
     filterIdArray = idArray => {
         const { filterValue } = this.state;
 
         // Filtering people array by first and last name and city
-        const resolvedPeopleArray = this.state.people.filter(person =>
-            (idArray.includes(person.id.value)) &&
-            (
-                `${person.name.first} ${person.name.last}`.includes(filterValue) ||
-                person.location.city.includes(filterValue)
-            )
-        );
+        const resolvedPeopleArray = this.state.people.filter(person => (
+            idArray.includes(person.id.value))
+            && (
+                `${person.name.first} ${person.name.last}`.includes(filterValue)
+                || person.location.city.includes(filterValue)
+            ));
 
-        return resolvedPeopleArray.map(el => el.id.value)
+        return resolvedPeopleArray.map(el => el.id.value);
     };
 
     render() {
@@ -74,8 +72,6 @@ class Row extends Component {
             </div>
         );
     }
-
-
 }
 
-export default Row
+export default Row;
