@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Spin } from 'antd';
 import { fetchPeople } from '../api';
 import { COLUMNS } from '../constants';
 import { Filters, Column } from '../components';
@@ -50,9 +50,7 @@ class Dashboard extends Component {
 
     render() {
         if (!this.state.people) {
-            return (
-                <h1>Waiting for data</h1>
-            );
+            return <Spin />;
         }
 
         return (

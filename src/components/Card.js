@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Card, Avatar, Button,
+    Card, Avatar, Button, Spin,
 } from 'antd';
 import { COLUMNS } from '../constants';
 
@@ -18,7 +18,7 @@ class PersonCard extends Component {
     render() {
         if (!this.state.person) {
             return (
-                <h1>Waiting for data</h1>
+                <Spin />
             );
         }
 
