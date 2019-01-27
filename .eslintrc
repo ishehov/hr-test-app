@@ -3,7 +3,7 @@
     "parser": "babel-eslint",
     "rules": {
         "import/prefer-default-export": 0,
-        "indent": ["warn", 4],
+        "indent": ["warn", 4, { "SwitchCase": 1 }],
         "arrow-parens": ["warn", "as-needed"],
         "eol-last": "warn",
         "react/jsx-filename-extension": 0,
