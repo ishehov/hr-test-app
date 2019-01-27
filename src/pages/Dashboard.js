@@ -3,9 +3,10 @@ import {
     Row, Col, Spin, Alert,
 } from 'antd';
 import styled from 'styled-components';
-import { fetchPeople } from '../api';
+import { connect } from 'react-redux';
 import { COLUMNS } from '../constants';
 import { Filters, Column } from '../components';
+import { fetchPeople } from '../actions';
 
 const PaddingBlock = styled.div`
     padding: ${props => props.paddingTop || '0'} ${props => props.paddingRight || '50px'};
@@ -19,6 +20,7 @@ const CenteringWrapper = styled.div`
 `;
 
 class Dashboard extends Component {
+    // TODO: Use state array from redux
     state = {
         people: null,
         fetchError: null,
@@ -27,13 +29,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        fetchPeople()
-            .then(people => ({
-                people,
-                [COLUMNS[0]]: people.map(el => el.id.value),
-            }))
-            .then(state => this.setState(state))
-            .catch(fetchError => this.setState({ fetchError }));
+        this.props.fetchPeople();
     }
 
     movePersonId = (id, from, to) => {
@@ -106,4 +102,13 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+// TODO: Use people array from redux
+const mapStateToProps = state => ({
+    people: state.dashboard.people
+});
+
+const mapDispatchToProps = ({
+    fetchPeople: fetchPeople
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
