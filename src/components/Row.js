@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { fetchPeople } from '../api'
 import { COLUMNS } from '../constants';
+import Filters from './Filters';
 import Column from './Column'
 
 
 class Row extends Component {
     state = {
         people: null,
+        filterValue: '',
         ...Object.assign({}, ...COLUMNS.map(el => ({ [el]: [] })))
     }
 
@@ -19,7 +21,7 @@ class Row extends Component {
             .then(state => this.setState(state))
     }
 
-    updateData = (id, from, to) => {
+    movePersonId = (id, from, to) => {
         if  (this.state[from].includes(id)) {
 
             this.setState({
@@ -28,6 +30,25 @@ class Row extends Component {
             })
         }
     }
+
+    handleFilterChange = filterValue => {
+        this.setState({ filterValue })
+    }
+
+    filterIdArray = idArray => {
+        const { filterValue } = this.state;
+
+        // Filtering people array by first and last name and city
+        const resolvedPeopleArray = this.state.people.filter(person =>
+            (idArray.includes(person.id.value)) &&
+            (
+                `${person.name.first} ${person.name.last}`.includes(filterValue) ||
+                person.location.city.includes(filterValue)
+            )
+        );
+
+        return resolvedPeopleArray.map(el => el.id.value)
+    };
 
     render() {
         if (!this.state.people) {
@@ -38,13 +59,14 @@ class Row extends Component {
 
         return (
             <div className="row">
+                <Filters handleChange={this.handleFilterChange} />
                 {COLUMNS.map((colKey, columnNumber) => (
                     <div className="column" key={colKey}>
                         <Column
                             name={colKey}
                             people={this.state.people}
-                            columnArray={this.state[colKey]}
-                            handleClick={this.updateData}
+                            columnArray={this.filterIdArray(this.state[colKey])}
+                            handleClick={this.movePersonId}
                             columnNumber={columnNumber}
                         />
                     </div>

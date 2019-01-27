@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_URL } from '../constants';
 
-export const fetchPeople = (nat = 'gb', count = '9') => axios( {
+export const fetchPeople = (nat = 'gb', count = '5') => axios( {
     method: 'get',
     url: `${API_URL}/?nat=${nat}&results=${count}`,
     responseType: 'json'

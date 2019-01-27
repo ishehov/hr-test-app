@@ -20,14 +20,13 @@ class Column extends Component {
             <div>
                 <h2>{this.props.name}</h2>
                 {this.props.columnArray.map(id => (
-                    <div key={id}>
-                        <Card
-                            id={id}
-                            columnNumber={this.props.columnNumber}
-                            handleClick={this.handleClick}
-                        />
-
-                    </div>
+                    <Card
+                        id={id}
+                        columnNumber={this.props.columnNumber}
+                        handleClick={this.handleClick}
+                        key={id}
+                        people={this.props.people}
+                    />
                 ))}
             </div>
         )

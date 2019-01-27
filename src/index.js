@@ -8,4 +8,4 @@ import Row from './components/Row'
 ReactDOM.render (
     <Row />,
     document.getElementById('root')
-    )
+);
