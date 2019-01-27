@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Card from './Card';
 import { COLUMNS } from '../constants';
 
@@ -16,8 +16,8 @@ class Column extends Component {
 
     render() {
         return (
-            <div>
-                <h2>{this.props.name}</h2>
+            <Fragment>
+                <h2 style={{ textAlign: 'center' }}>{this.props.name}</h2>
                 {this.props.columnArray.map(id => (
                     <Card
                         id={id}
@@ -27,7 +27,7 @@ class Column extends Component {
                         people={this.props.people}
                     />
                 ))}
-            </div>
+            </Fragment>
         );
     }
 }

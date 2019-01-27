@@ -1,11 +1,9 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import './index.css'
-import Row from './components/Row'
-
-
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './pages';
+import 'antd/dist/antd.css';
 
 ReactDOM.render (
-    <Row />,
+    <App />,
     document.getElementById('root')
 );

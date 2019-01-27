@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import {
+    Card, Avatar, Button,
+} from 'antd';
 import { COLUMNS } from '../constants';
 
-class Card extends Component {
+class PersonCard extends Component {
     state = {
         person: null,
     }
@@ -20,35 +23,26 @@ class Card extends Component {
         }
 
         const {
-            name, picture, cell, email, location,
+            name, picture, cell, location,
         } = this.state.person;
 
         return (
-            <div>
-                <div><img src={picture.thumbnail} alt="" /></div>
-                <h3>
-                    {name.first}
-                    {' '}
-                    {name.last}
-                </h3>
-                <p>
-                    {location.city}
-                    <br />
-                    <a href={`mailto:${email}`}>Email</a>
-                    {' '}
-                    <a href={`tel:${cell}`}>Phone</a>
-                </p>
-
-                {(this.props.columnNumber !== 0) && (
-                    <button type="button" onClick={() => this.props.handleClick(this.props.id, 'left')}>Move to Left</button>
-                )}
-
-                {(this.props.columnNumber !== COLUMNS.length - 1) && (
-                    <button type="button" onClick={() => this.props.handleClick(this.props.id, 'right')}>Move to Right</button>
-                )}
-            </div>
+            <Card
+                style={{ textTransform: 'capitalize', marginBottom: 14 }}
+                actions={[
+                    (this.props.columnNumber !== 0) && <Button size="small" icon="left" onClick={() => this.props.handleClick(this.props.id, 'left')} />,
+                    <Button size="small" icon="phone" href={`tel:${cell}`} />,
+                    (this.props.columnNumber !== COLUMNS.length - 1) && <Button size="small" icon="right" onClick={() => this.props.handleClick(this.props.id, 'right')} />,
+                ]}
+            >
+                <Card.Meta
+                    avatar={<Avatar size="large" src={picture.large} />}
+                    title={`${name.first} ${name.last}`}
+                    description={location.city}
+                />
+            </Card>
         );
     }
 }
 
-export default Card;
+export default PersonCard;

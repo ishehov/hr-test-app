@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { Row, Col } from 'antd';
 import { fetchPeople } from '../api';
 import { COLUMNS } from '../constants';
-import Filters from './Filters';
-import Column from './Column';
+import { Filters, Column } from '../components';
 
 
-class Row extends Component {
+class Dashboard extends Component {
     state = {
         people: null,
         filterValue: '',
@@ -56,22 +56,27 @@ class Row extends Component {
         }
 
         return (
-            <div className="row">
-                <Filters handleChange={this.handleFilterChange} />
-                {COLUMNS.map((colKey, columnNumber) => (
-                    <div className="column" key={colKey}>
-                        <Column
-                            name={colKey}
-                            people={this.state.people}
-                            columnArray={this.filterIdArray(this.state[colKey])}
-                            handleClick={this.movePersonId}
-                            columnNumber={columnNumber}
-                        />
-                    </div>
-                ))}
-            </div>
+            <Row gutter={16}>
+                <div style={{ padding: '0 57px' }}>
+                    <Filters handleChange={this.handleFilterChange} />
+                </div>
+                <div style={{ padding: 50 }}>
+                    {COLUMNS.map((colKey, columnNumber) => (
+                        // ANTD grid has 24 units. Computing Col width
+                        <Col md={Math.round(24 / COLUMNS.length)} key={colKey}>
+                            <Column
+                                name={colKey}
+                                people={this.state.people}
+                                columnArray={this.filterIdArray(this.state[colKey])}
+                                handleClick={this.movePersonId}
+                                columnNumber={columnNumber}
+                            />
+                        </Col>
+                    ))}
+                </div>
+            </Row>
         );
     }
 }
 
-export default Row;
+export default Dashboard;

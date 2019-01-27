@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import { Input } from 'antd';
 
 class Filters extends Component {
     onFilterChange = ({ target: { value } }) => {
-        this.props.handleChange(value);
+        this.props.handleChange(value.toLowerCase());
     };
 
     render() {
         return (
             <div>
-                <input placeholder="Name & City filter" onChange={this.onFilterChange} />
+                <Input addonBefore="Filter:" placeholder="Name & City filter" onChange={this.onFilterChange} />
             </div>
         );
     }
