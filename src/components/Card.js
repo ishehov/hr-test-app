@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Card, Avatar, Button, Spin,
+    Card, Avatar, Button,
 } from 'antd';
 import styled from 'styled-components';
 import { COLUMNS } from '../constants';
@@ -12,22 +12,11 @@ const CardWrapper = styled.div`
 
 class PersonCard extends Component {
     state = {
-        person: null,
-    }
-
-    componentDidMount() {
-        const person = this.props.people.find(el => el.id.value === this.props.id);
-
-        this.setState({ person });
-    }
+        person: this.props.people.find(el => el.id.value === this.props.id),
+    };
 
     render() {
-        if (!this.state.person) {
-            return (
-                <Spin />
-            );
-        }
-
+        const { columnNumber, handleClick, id } = this.props;
         const {
             name, picture, cell, location,
         } = this.state.person;
@@ -37,9 +26,11 @@ class PersonCard extends Component {
             <CardWrapper>
                 <Card
                     actions={[
-                        (this.props.columnNumber !== 0) && <Button size="small" icon="left" onClick={() => this.props.handleClick(this.props.id, 'left')} />,
+                        (columnNumber !== 0)
+                            && <Button size="small" icon="left" onClick={() => handleClick(id, 'left')} />,
                         <Button size="small" icon="phone" href={`tel:${cell}`} />,
-                        (this.props.columnNumber !== COLUMNS.length - 1) && <Button size="small" icon="right" onClick={() => this.props.handleClick(this.props.id, 'right')} />,
+                        (columnNumber !== COLUMNS.length - 1)
+                            && <Button size="small" icon="right" onClick={() => handleClick(id, 'right')} />,
                     ]}
                 >
                     <Card.Meta

@@ -9,6 +9,13 @@ const PaddingBlock = styled.div`
     padding: ${props => props.paddingTop || '0'} ${props => props.paddingRight || '50px'};
 `;
 
+const SpinnerWrapper = styled.div`
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+`;
+
 class Dashboard extends Component {
     state = {
         people: null,
@@ -54,7 +61,7 @@ class Dashboard extends Component {
 
     render() {
         if (!this.state.people) {
-            return <Spin />;
+            return <SpinnerWrapper><Spin /></SpinnerWrapper>;
         }
 
         return (
