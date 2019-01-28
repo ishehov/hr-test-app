@@ -1,6 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import styled from 'styled-components';
 import Card from './Card';
 import { COLUMNS } from '../constants';
+
+const ColumnName = styled.h2`
+    text-align: center;
+`;
 
 class Column extends Component {
     handleClick = (id, direction) => {
@@ -17,7 +22,7 @@ class Column extends Component {
     render() {
         return (
             <Fragment>
-                <h2 style={{ textAlign: 'center' }}>{this.props.name}</h2>
+                <ColumnName>{this.props.name}</ColumnName>
                 {this.props.columnArray.map(id => (
                     <Card
                         id={id}

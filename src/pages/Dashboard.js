@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Row, Col, Spin } from 'antd';
+import styled from 'styled-components';
 import { fetchPeople } from '../api';
 import { COLUMNS } from '../constants';
 import { Filters, Column } from '../components';
 
+const PaddingBlock = styled.div`
+    padding: ${props => props.paddingTop || '0'} ${props => props.paddingRight || '50px'};
+`;
 
 class Dashboard extends Component {
     state = {
@@ -54,25 +58,27 @@ class Dashboard extends Component {
         }
 
         return (
-            <Row gutter={16}>
-                <div style={{ padding: '0 57px' }}>
+            <Fragment>
+                <PaddingBlock paddingRight="57px">
                     <Filters handleChange={this.handleFilterChange} />
-                </div>
-                <div style={{ padding: 50 }}>
-                    {COLUMNS.map((colKey, columnNumber) => (
-                        // ANTD grid has 24 units. Computing Col width
-                        <Col md={Math.round(24 / COLUMNS.length)} key={colKey}>
-                            <Column
-                                name={colKey}
-                                people={this.state.people}
-                                columnArray={this.filterIdArray(this.state[colKey])}
-                                handleClick={this.movePersonId}
-                                columnNumber={columnNumber}
-                            />
-                        </Col>
-                    ))}
-                </div>
-            </Row>
+                </PaddingBlock>
+                <PaddingBlock paddingTop="50px">
+                    <Row gutter={16}>
+                        {COLUMNS.map((colKey, columnNumber) => (
+                            // ANTD grid has 24 units. Computing Col width
+                            <Col md={Math.round(24 / COLUMNS.length)} key={colKey}>
+                                <Column
+                                    name={colKey}
+                                    people={this.state.people}
+                                    columnArray={this.filterIdArray(this.state[colKey])}
+                                    handleClick={this.movePersonId}
+                                    columnNumber={columnNumber}
+                                />
+                            </Col>
+                        ))}
+                    </Row>
+                </PaddingBlock>
+            </Fragment>
         );
     }
 }
