@@ -3,7 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### TODO:
-- Implement redux
+- [Implement redux](https://github.com/ishehov/hr-test-app/tree/redux)
 - Write tests with Jest
 - Use styled-components
 
