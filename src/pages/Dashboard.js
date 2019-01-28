@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Row, Col, Spin } from 'antd';
+import {
+    Row, Col, Spin, Alert,
+} from 'antd';
 import styled from 'styled-components';
 import { fetchPeople } from '../api';
 import { COLUMNS } from '../constants';
@@ -9,7 +11,7 @@ const PaddingBlock = styled.div`
     padding: ${props => props.paddingTop || '0'} ${props => props.paddingRight || '50px'};
 `;
 
-const SpinnerWrapper = styled.div`
+const CenteringWrapper = styled.div`
     display: flex;
     height: 100vh;
     justify-content: center;
@@ -19,6 +21,7 @@ const SpinnerWrapper = styled.div`
 class Dashboard extends Component {
     state = {
         people: null,
+        fetchError: null,
         filterValue: '',
         ...Object.assign({}, ...COLUMNS.map(el => ({ [el]: [] }))),
     }
@@ -29,7 +32,8 @@ class Dashboard extends Component {
                 people,
                 [COLUMNS[0]]: people.map(el => el.id.value),
             }))
-            .then(state => this.setState(state));
+            .then(state => this.setState(state))
+            .catch(fetchError => this.setState({ fetchError }));
     }
 
     movePersonId = (id, from, to) => {
@@ -60,8 +64,20 @@ class Dashboard extends Component {
     };
 
     render() {
+        if (this.state.fetchError) {
+            return (
+                <CenteringWrapper paddingTop="50px">
+                    <Alert
+                        message="There's some problem with getting the data :("
+                        description={this.state.fetchError.message}
+                        type="error"
+                    />
+                </CenteringWrapper>
+            );
+        }
+
         if (!this.state.people) {
-            return <SpinnerWrapper><Spin /></SpinnerWrapper>;
+            return <CenteringWrapper><Spin /></CenteringWrapper>;
         }
 
         return (
