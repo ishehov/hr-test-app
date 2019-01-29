@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Input } from 'antd';
+import { handleFilterChange } from '../actions';
 
 class Filters extends Component {
     onFilterChange = ({ target: { value } }) => {
-        this.props.handleChange(value.toLowerCase());
+        this.props.handleFilterChange(value.toLowerCase());
     };
 
     render() {
@@ -15,4 +17,10 @@ class Filters extends Component {
     }
 }
 
-export default Filters;
+
+const mapDispatchToProps = ({
+    handleFilterChange,
+});
+
+
+export default connect(null, mapDispatchToProps)(Filters);

@@ -20,66 +20,43 @@ const CenteringWrapper = styled.div`
 `;
 
 class Dashboard extends Component {
-    // TODO: Use state array from redux
-    state = {
-        people: null,
-        fetchError: null,
-        filterValue: '',
-        ...Object.assign({}, ...COLUMNS.map(el => ({ [el]: [] }))),
-    }
-
     componentDidMount() {
         this.props.fetchPeople();
     }
 
-    movePersonId = (id, from, to) => {
-        if (this.state[from].includes(id)) {
-            this.setState(prevState => ({
-                [from]: prevState[from].filter(el => (id !== el)),
-                [to]: prevState[to].concat(id),
-            }));
-        }
-    }
-
-    handleFilterChange = filterValue => {
-        this.setState({ filterValue });
-    }
-
     filterIdArray = idArray => {
-        const { filterValue } = this.state;
+        const { filterValue, people } = this.props;
 
         // Filtering people array by first and last name and city
-        const resolvedPeopleArray = this.state.people.filter(person => (
-            idArray.includes(person.id.value))
+        return Object.keys(people).filter(personId => (
+            idArray.includes(people[personId].id.value))
             && (
-                `${person.name.first} ${person.name.last}`.includes(filterValue)
-                || person.location.city.includes(filterValue)
+                `${people[personId].name.first} ${people[personId].name.last}`.includes(filterValue)
+                || people[personId].location.city.includes(filterValue)
             ));
-
-        return resolvedPeopleArray.map(el => el.id.value);
     };
 
     render() {
-        if (this.state.fetchError) {
+        if (this.props.fetchError) {
             return (
                 <CenteringWrapper paddingTop="50px">
                     <Alert
                         message="There's some problem with getting the data :("
-                        description={this.state.fetchError.message}
+                        description={this.props.fetchError.message}
                         type="error"
                     />
                 </CenteringWrapper>
             );
         }
 
-        if (!this.state.people) {
-            return <CenteringWrapper><Spin /></CenteringWrapper>;
+        if (!Object.keys(this.props.people).length) {
+            return <CenteringWrapper><Spin size="large" /></CenteringWrapper>;
         }
 
         return (
             <Fragment>
                 <PaddingBlock paddingRight="57px">
-                    <Filters handleChange={this.handleFilterChange} />
+                    <Filters />
                 </PaddingBlock>
                 <PaddingBlock paddingTop="50px">
                     <Row gutter={16}>
@@ -88,9 +65,7 @@ class Dashboard extends Component {
                             <Col md={Math.round(24 / COLUMNS.length)} key={colKey}>
                                 <Column
                                     name={colKey}
-                                    people={this.state.people}
-                                    columnArray={this.filterIdArray(this.state[colKey])}
-                                    handleClick={this.movePersonId}
+                                    columnArray={this.filterIdArray(this.props.columns[colKey])}
                                     columnNumber={columnNumber}
                                 />
                             </Col>
@@ -102,13 +77,20 @@ class Dashboard extends Component {
     }
 }
 
-// TODO: Use people array from redux
-const mapStateToProps = state => ({
-    people: state.dashboard.people
+const mapStateToProps = ({
+    dashboard: {
+        people, loading, fetchError, filterValue, columns,
+    },
+}) => ({
+    people,
+    loading,
+    fetchError,
+    columns,
+    filterValue,
 });
 
 const mapDispatchToProps = ({
-    fetchPeople: fetchPeople
-})
+    fetchPeople,
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

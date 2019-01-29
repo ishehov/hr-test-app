@@ -3,6 +3,8 @@ import {
     Card, Avatar, Button,
 } from 'antd';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { movePersonId } from '../actions';
 import { COLUMNS } from '../constants';
 
 const CardWrapper = styled.div`
@@ -11,15 +13,22 @@ const CardWrapper = styled.div`
 `;
 
 class PersonCard extends Component {
-    state = {
-        person: this.props.people.find(el => el.id.value === this.props.id),
-    };
+    handleClick = (id, direction) => {
+        const { columnNumber, movePersonId } = this.props;
+
+        return movePersonId(
+            id,
+            COLUMNS[columnNumber],
+            COLUMNS[(direction === 'left') ? columnNumber - 1 : columnNumber + 1],
+        );
+    }
 
     render() {
-        const { columnNumber, handleClick, id } = this.props;
         const {
-            name, picture, cell, location,
-        } = this.state.person;
+            columnNumber, id, person: {
+                name, picture, cell, location,
+            },
+        } = this.props;
 
         return (
             // Here I've used Wrapper to not mix up AntD classes with styled-components generated classes
@@ -27,10 +36,10 @@ class PersonCard extends Component {
                 <Card
                     actions={[
                         (columnNumber !== 0)
-                            && <Button size="small" icon="left" onClick={() => handleClick(id, 'left')} />,
+                            && <Button size="small" icon="left" onClick={() => this.handleClick(id, 'left')} />,
                         <Button size="small" icon="phone" href={`tel:${cell}`} />,
                         (columnNumber !== COLUMNS.length - 1)
-                            && <Button size="small" icon="right" onClick={() => handleClick(id, 'right')} />,
+                            && <Button size="small" icon="right" onClick={() => this.handleClick(id, 'right')} />,
                     ]}
                 >
                     <Card.Meta
@@ -44,4 +53,14 @@ class PersonCard extends Component {
     }
 }
 
-export default PersonCard;
+const mapStateToProps = ({
+    dashboard: { people },
+}, { id }) => ({
+    person: people[id],
+});
+
+const mapDispatchToProps = ({
+    movePersonId,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PersonCard);
